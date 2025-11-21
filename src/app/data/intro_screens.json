@@ -1,0 +1,80 @@
+{
+  "screens": [
+    {
+      "id": 1,
+      "background": "bg_apartment_day.jpg",
+      "character": {
+        "name": "kai",
+        "expressions": ["normal", "smile"]
+      },
+      "text": [
+        "Tokyo didn’t fall all at once. It fractured… piece by piece. Like memories slipping through tired hands.",
+        "My name is Kai. And this is where my story begins—the night I realized my daughter’s voice wasn’t gone after all."
+      ]
+    },
+    {
+      "id": 2,
+      "background": "office_dim.jpg",
+      "character": {
+        "name": "kai",
+        "expressions": ["sad", "sweat"]
+      },
+      "text": [
+        "Before everything collapsed, Airi used to sit right there—sketching on my datapad, humming songs I pretended not to like.",
+        "When the System went dark, I thought I lost her forever. But in the static… something answered."
+      ]
+    },
+    {
+      "id": 3,
+      "background": "digital_static.jpg",
+      "character": {
+        "name": "airi",
+        "expressions": ["sad", "annoyed"]
+      },
+      "text": [
+        "“…Dad? Is that you?”",
+        "Her voice—distorted, fragile, but unmistakably hers. A ghost woven from corrupted code and fading memories."
+      ]
+    },
+    {
+      "id": 4,
+      "background": "tokyo_ruins_night.jpg",
+      "character": {
+        "name": "kai",
+        "expressions": ["smirk", "surprised"]
+      },
+      "text": [
+        "I followed her echoes across a broken city—through abandoned stations, collapsed towers, and the quiet places where no one goes anymore.",
+        "Every fragment I found brought me closer to the truth… and farther from the man I used to be."
+      ]
+    },
+    {
+      "id": 5,
+      "background": "lab_dark.jpg",
+      "character": {
+        "name": "airi",
+        "expressions": ["smug", "scared"]
+      },
+      "text": [
+        "“Dad… if you keep searching, you might not like what you find.”",
+        "Airi wasn’t just a memory. She wasn’t just data. She was something new—something caught between who she was and who she might become."
+      ]
+    },
+    {
+      "id": 6,
+      "background": "white_fade.jpg",
+      "character": {
+        "name": "none"
+      },
+      "text": [
+        "Fractured Horizons is a story about loss, discovery, and the lengths we go to for the ones we love.",
+        "If you want to know what happens to Kai and Airi… their full journey awaits.",
+        "Tap below to read the book."
+      ],
+      "final": {
+        "showBookCover": true,
+        "buttonText": "Read the Full Story"
+      }
+    }
+  ]
+}
