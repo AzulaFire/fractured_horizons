@@ -136,102 +136,90 @@ export default function ChapterOne() {
             alt='Scene Background'
             width={1920}
             height={1080}
-            className='absolute inset-0 w-full h-full object-cover opacity-50'
+            className='absolute inset-0 w-full h-full object-cover opacity-70'
             loading='eager'
           />
 
           {/* --- KAI --- */}
-          <AnimatePresence mode='wait'>
-            {kai && (
-              <motion.img
-                key={`kai-${kai.expression}`}
-                src={`/characters/kai/${kai.expression}.png`}
-                alt='Kai'
-                className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
-                style={{ bottom: raisedBottom }}
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{
-                  opacity: { duration: 0.5 },
-                  x: { duration: 0.4 },
-                }}
-                onClick={(e) => e.stopPropagation()}
-              />
-            )}
-          </AnimatePresence>
+          {kai && (
+            <motion.img
+              key={`kai-${kai.expression}`}
+              src={`/characters/kai/${kai.expression}.png`}
+              alt='Kai'
+              className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
+              style={{ bottom: raisedBottom }}
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ opacity: { duration: 0.5 }, x: { duration: 0.4 } }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
 
           {/* --- AIRI --- */}
-          <AnimatePresence mode='wait'>
-            {airi && (
-              <motion.img
-                key={`airi-${airi.expression}`}
-                src={`/characters/airi/${airi.expression}.png`}
-                alt='Airi'
-                className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
-                style={{ bottom: raisedBottom }}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 40 }}
-                transition={{
-                  opacity: { duration: 0.5 },
-                  x: { duration: 0.4 },
-                }}
-                onClick={(e) => e.stopPropagation()}
-              />
-            )}
-          </AnimatePresence>
+          {airi && (
+            <motion.img
+              key={`airi-${airi.expression}`}
+              src={`/characters/airi/${airi.expression}.png`}
+              alt='Airi'
+              className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
+              style={{ bottom: raisedBottom }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ opacity: { duration: 0.5 }, x: { duration: 0.4 } }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
       {/* --- TEXTBOX --- */}
-      <AnimatePresence>
-        {!hideBox && (
-          <motion.div
-            className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
-            style={{ bottom: isMobile ? 140 : 32 }}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
+      <motion.div
+        className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
+        style={{ bottom: isMobile ? 140 : 32 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
 
-            {/* FINAL SCREEN CTA */}
-            {screenIndex === screens.length - 1 &&
-              textIndex === screen.text.length - 1 &&
-              !isTyping && (
-                <motion.div
-                  className='mt-6 flex flex-col items-center gap-4'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
+        {/* FINAL SCREEN CTA */}
+        {screenIndex === screens.length - 1 &&
+          textIndex === screen.text.length - 1 &&
+          !isTyping && (
+            <AnimatePresence>
+              <motion.div
+                className='mt-6 flex flex-col items-center gap-4'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Image
+                  src='/images/book_cover.png'
+                  alt='Fractured Horizons Book Cover'
+                  width={260}
+                  height={380}
+                  className='rounded-xl shadow-xl'
+                />
+
+                <Button
+                  className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
+                  onClick={() => (window.location.href = '/book')}
                 >
-                  <Image
-                    src='/images/book_cover.png'
-                    alt='Fractured Horizons Book Cover'
-                    width={260}
-                    height={380}
-                    className='rounded-xl shadow-xl'
-                  />
+                  Learn More / Buy the Book
+                </Button>
 
-                  <Button
-                    className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
-                    onClick={() => (window.location.href = '/book')}
-                  >
-                    Learn More / Buy the Book
+                <Link href='/'>
+                  <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
+                    Home
                   </Button>
-
-                  <Link href='/'>
-                    <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
-                      Home
-                    </Button>
-                  </Link>
-                </motion.div>
-              )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                </Link>
+              </motion.div>
+            </AnimatePresence>
+          )}
+      </motion.div>
     </div>
   );
 }
