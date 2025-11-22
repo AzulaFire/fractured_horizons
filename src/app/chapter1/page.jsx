@@ -102,15 +102,20 @@ export default function ChapterOne() {
       className='relative w-full h-screen bg-black overflow-hidden text-white'
       onClick={handleAdvance}
     >
-      {/* MOBILE TAP-TO-ADVANCE FIX */}
-      <button
-        className='absolute inset-0 z-30 block md:hidden'
-        style={{ background: 'transparent' }}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleAdvance();
-        }}
-      />
+      {/* MOBILE TAP-TO-ADVANCE FIX: only before final screen */}
+      {!(
+        screenIndex === screens.length - 1 &&
+        textIndex === screen.text.length - 1
+      ) && (
+        <button
+          className='absolute inset-0 z-30 block md:hidden'
+          style={{ background: 'transparent' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAdvance();
+          }}
+        />
+      )}
 
       {/* BACKGROUND */}
       <AnimatePresence mode='wait'>
@@ -142,8 +147,7 @@ export default function ChapterOne() {
                 key={`kai-${kai.expression}`}
                 src={`/characters/kai/${kai.expression}.png`}
                 alt='Kai'
-                className='absolute h-[70%] object-contain z-10 
-                  left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
+                className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
                 style={{ bottom: raisedBottom }}
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -164,8 +168,7 @@ export default function ChapterOne() {
                 key={`airi-${airi.expression}`}
                 src={`/characters/airi/${airi.expression}.png`}
                 alt='Airi'
-                className='absolute h-[70%] object-contain z-10 
-                  left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
+                className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
                 style={{ bottom: raisedBottom }}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -189,18 +192,20 @@ export default function ChapterOne() {
             style={{ bottom: isMobile ? 140 : 32 }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
             onClick={(e) => e.stopPropagation()}
           >
             <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
 
             {/* FINAL SCREEN CTA */}
             {screenIndex === screens.length - 1 &&
-              textIndex === screen.text.length - 1 && (
+              textIndex === screen.text.length - 1 &&
+              !isTyping && (
                 <motion.div
                   className='mt-6 flex flex-col items-center gap-4'
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: isTyping ? 0 : 1 }}
-                  transition={{ duration: 0.5 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
                 >
                   <Image
                     src='/images/book_cover.png'
