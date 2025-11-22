@@ -12,6 +12,7 @@ export default function ChapterOne() {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [hideBox, setHideBox] = useState(false);
+  const [finalScreenReady, setFinalScreenReady] = useState(false);
 
   // MOBILE DETECTION
   const [isMobile, setIsMobile] = useState(false);
@@ -19,11 +20,8 @@ export default function ChapterOne() {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  // Shared mobile offset
-  const MOBILE_OFFSET = isMobile ? 40 : 0;
-
-  // Character downward correction (mobile only)
-  const CHARACTER_ADJUST = isMobile ? -60 : 0;
+  const MOBILE_OFFSET = isMobile ? 55 : 0; // slightly increased for positioning
+  const CHARACTER_ADJUST = isMobile ? -45 : 0;
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
@@ -43,13 +41,14 @@ export default function ChapterOne() {
       }
 
       setIsTyping(false);
+      // Do NOT automatically show final screen here
     }
 
     if (fullText) typeText();
     return () => {
       cancelled = true;
     };
-  }, [fullText]);
+  }, [fullText, screenIndex, textIndex]);
 
   // --- ADVANCE LOGIC ---
   const handleAdvance = () => {
@@ -67,6 +66,11 @@ export default function ChapterOne() {
       setScreenIndex(screenIndex + 1);
       setTextIndex(0);
       return;
+    }
+
+    // Last text of last screen -> user must advance
+    if (isLastScreen && isLastText) {
+      setFinalScreenReady(true);
     }
   };
 
@@ -91,7 +95,7 @@ export default function ChapterOne() {
   const kai = getCharacter('kai');
   const airi = getCharacter('airi');
 
-  // --- CHARACTER POSITION FIX (mobile adjusted) ---
+  // --- CHARACTER POSITION FIX ---
   const characterBottom = hideBox ? 0 : isMobile ? 24 : 12;
   const raisedBottom = `calc(${characterBottom}% + ${
     20 + MOBILE_OFFSET + CHARACTER_ADJUST
@@ -103,10 +107,7 @@ export default function ChapterOne() {
       onClick={handleAdvance}
     >
       {/* MOBILE TAP-TO-ADVANCE FIX: only before final screen */}
-      {!(
-        screenIndex === screens.length - 1 &&
-        textIndex === screen.text.length - 1
-      ) && (
+      {!finalScreenReady && (
         <button
           className='absolute inset-0 z-30 block md:hidden'
           style={{ background: 'transparent' }}
@@ -141,60 +142,68 @@ export default function ChapterOne() {
           />
 
           {/* --- KAI --- */}
-          {kai && (
-            <motion.img
-              key={`kai-${kai.expression}`}
-              src={`/characters/kai/${kai.expression}.png`}
-              alt='Kai'
-              className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
-              style={{ bottom: raisedBottom }}
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ opacity: { duration: 0.5 }, x: { duration: 0.4 } }}
-              onClick={(e) => e.stopPropagation()}
-            />
-          )}
+          <AnimatePresence mode='wait'>
+            {kai && (
+              <motion.img
+                key={`kai-${kai.expression}`}
+                src={`/characters/kai/${kai.expression}.png`}
+                alt='Kai'
+                className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
+                style={{ bottom: raisedBottom }}
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{
+                  opacity: { duration: 0.5 },
+                  x: { duration: 0.4 },
+                }}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+          </AnimatePresence>
 
           {/* --- AIRI --- */}
-          {airi && (
-            <motion.img
-              key={`airi-${airi.expression}`}
-              src={`/characters/airi/${airi.expression}.png`}
-              alt='Airi'
-              className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
-              style={{ bottom: raisedBottom }}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 40 }}
-              transition={{ opacity: { duration: 0.5 }, x: { duration: 0.4 } }}
-              onClick={(e) => e.stopPropagation()}
-            />
-          )}
+          <AnimatePresence mode='wait'>
+            {airi && (
+              <motion.img
+                key={`airi-${airi.expression}`}
+                src={`/characters/airi/${airi.expression}.png`}
+                alt='Airi'
+                className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
+                style={{ bottom: raisedBottom }}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 40 }}
+                transition={{
+                  opacity: { duration: 0.5 },
+                  x: { duration: 0.4 },
+                }}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+          </AnimatePresence>
         </motion.div>
       </AnimatePresence>
 
-      {/* --- TEXTBOX --- */}
-      <motion.div
-        className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
-        style={{ bottom: isMobile ? 140 : 32 }}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
+      {/* --- TEXTBOX & FINAL SCREEN --- */}
+      <AnimatePresence>
+        {!hideBox && (
+          <motion.div
+            className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
+            style={{ bottom: isMobile ? 155 : 32 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
 
-        {/* FINAL SCREEN CTA */}
-        {screenIndex === screens.length - 1 &&
-          textIndex === screen.text.length - 1 &&
-          !isTyping && (
-            <AnimatePresence>
+            {finalScreenReady && (
               <motion.div
                 className='mt-6 flex flex-col items-center gap-4'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.2 }}
               >
                 <Image
                   src='/images/book_cover.png'
@@ -203,23 +212,22 @@ export default function ChapterOne() {
                   height={380}
                   className='rounded-xl shadow-xl'
                 />
-
                 <Button
                   className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
                   onClick={() => (window.location.href = '/book')}
                 >
                   Learn More / Buy the Book
                 </Button>
-
                 <Link href='/'>
                   <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
                     Home
                   </Button>
                 </Link>
               </motion.div>
-            </AnimatePresence>
-          )}
-      </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
