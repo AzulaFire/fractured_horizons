@@ -12,7 +12,6 @@ export default function ChapterOne() {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [hideBox, setHideBox] = useState(false);
-  const [finalScreenReady, setFinalScreenReady] = useState(false);
 
   // MOBILE DETECTION
   const [isMobile, setIsMobile] = useState(false);
@@ -20,8 +19,9 @@ export default function ChapterOne() {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  const MOBILE_OFFSET = isMobile ? 55 : 0; // slightly increased for positioning
-  const CHARACTER_ADJUST = isMobile ? -45 : 0;
+  // --- MOBILE POSITIONING ADJUSTMENTS ---
+  const MOBILE_OFFSET = isMobile ? 85 : 0; // moves characters down on mobile
+  const CHARACTER_ADJUST = isMobile ? -45 : 0; // fine-tune character position
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
@@ -41,14 +41,13 @@ export default function ChapterOne() {
       }
 
       setIsTyping(false);
-      // Do NOT automatically show final screen here
     }
 
     if (fullText) typeText();
     return () => {
       cancelled = true;
     };
-  }, [fullText, screenIndex, textIndex]);
+  }, [fullText]);
 
   // --- ADVANCE LOGIC ---
   const handleAdvance = () => {
@@ -66,11 +65,6 @@ export default function ChapterOne() {
       setScreenIndex(screenIndex + 1);
       setTextIndex(0);
       return;
-    }
-
-    // Last text of last screen -> user must advance
-    if (isLastScreen && isLastText) {
-      setFinalScreenReady(true);
     }
   };
 
@@ -95,7 +89,7 @@ export default function ChapterOne() {
   const kai = getCharacter('kai');
   const airi = getCharacter('airi');
 
-  // --- CHARACTER POSITION FIX ---
+  // --- CHARACTER POSITION ---
   const characterBottom = hideBox ? 0 : isMobile ? 24 : 12;
   const raisedBottom = `calc(${characterBottom}% + ${
     20 + MOBILE_OFFSET + CHARACTER_ADJUST
@@ -107,7 +101,10 @@ export default function ChapterOne() {
       onClick={handleAdvance}
     >
       {/* MOBILE TAP-TO-ADVANCE FIX: only before final screen */}
-      {!finalScreenReady && (
+      {!(
+        screenIndex === screens.length - 1 &&
+        textIndex === screen.text.length - 1
+      ) && (
         <button
           className='absolute inset-0 z-30 block md:hidden'
           style={{ background: 'transparent' }}
@@ -185,12 +182,12 @@ export default function ChapterOne() {
         </motion.div>
       </AnimatePresence>
 
-      {/* --- TEXTBOX & FINAL SCREEN --- */}
+      {/* --- TEXTBOX --- */}
       <AnimatePresence>
         {!hideBox && (
           <motion.div
             className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
-            style={{ bottom: isMobile ? 155 : 32 }}
+            style={{ bottom: isMobile ? 125 : 32 }} // mobile moved down 30px
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
@@ -198,33 +195,38 @@ export default function ChapterOne() {
           >
             <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
 
-            {finalScreenReady && (
-              <motion.div
-                className='mt-6 flex flex-col items-center gap-4'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Image
-                  src='/images/book_cover.png'
-                  alt='Fractured Horizons Book Cover'
-                  width={260}
-                  height={380}
-                  className='rounded-xl shadow-xl'
-                />
-                <Button
-                  className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
-                  onClick={() => (window.location.href = '/book')}
+            {/* FINAL SCREEN CTA */}
+            {screenIndex === screens.length - 1 &&
+              textIndex === screen.text.length - 1 &&
+              !isTyping && (
+                <motion.div
+                  className='mt-6 flex flex-col items-center gap-4'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  Learn More / Buy the Book
-                </Button>
-                <Link href='/'>
-                  <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
-                    Home
+                  <Image
+                    src='/images/book_cover.png'
+                    alt='Fractured Horizons Book Cover'
+                    width={260}
+                    height={380}
+                    className='rounded-xl shadow-xl'
+                  />
+
+                  <Button
+                    className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
+                    onClick={() => (window.location.href = '/book')}
+                  >
+                    Learn More / Buy the Book
                   </Button>
-                </Link>
-              </motion.div>
-            )}
+
+                  <Link href='/'>
+                    <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
+                      Home
+                    </Button>
+                  </Link>
+                </motion.div>
+              )}
           </motion.div>
         )}
       </AnimatePresence>
