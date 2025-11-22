@@ -21,7 +21,7 @@ export default function ChapterOne() {
   }, []);
 
   const MOBILE_OFFSET = isMobile ? 60 : 0; // slightly increased for positioning
-  const CHARACTER_ADJUST = isMobile ? -90 : 0;
+  const CHARACTER_ADJUST = isMobile ? -100 : 0;
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
