@@ -28,18 +28,6 @@ export default function ChapterOne() {
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
 
-  // --- PRELOAD BOOK COVER (fix flicker) ---
-  const preload = (
-    <Image
-      src='/images/book_cover.png'
-      alt=''
-      width={1}
-      height={1}
-      style={{ opacity: 0, position: 'absolute', pointerEvents: 'none' }}
-      priority
-    />
-  );
-
   // --- TYPEWRITER EFFECT ---
   useEffect(() => {
     let cancelled = false;
@@ -105,34 +93,24 @@ export default function ChapterOne() {
 
   // --- CHARACTER POSITION FIX (mobile adjusted) ---
   const characterBottom = hideBox ? 0 : isMobile ? 24 : 12;
-
   const raisedBottom = `calc(${characterBottom}% + ${
     20 + MOBILE_OFFSET + CHARACTER_ADJUST
   }px)`;
-
-  const isFinal =
-    screenIndex === screens.length - 1 &&
-    textIndex === screen.text.length - 1 &&
-    !isTyping;
 
   return (
     <div
       className='relative w-full h-screen bg-black overflow-hidden text-white'
       onClick={handleAdvance}
     >
-      {preload}
-
-      {/* MOBILE TAP-TO-ADVANCE — now disabled on final screen */}
-      {!isFinal && (
-        <button
-          className='absolute inset-0 z-30 block md:hidden'
-          style={{ background: 'transparent' }}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAdvance();
-          }}
-        />
-      )}
+      {/* MOBILE TAP-TO-ADVANCE FIX */}
+      <button
+        className='absolute inset-0 z-30 block md:hidden'
+        style={{ background: 'transparent' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleAdvance();
+        }}
+      />
 
       {/* BACKGROUND */}
       <AnimatePresence mode='wait'>
@@ -207,54 +185,45 @@ export default function ChapterOne() {
       <AnimatePresence>
         {!hideBox && (
           <motion.div
-            className='absolute left-1/2 -translate-x-1/2 
-              w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 
-              rounded-2xl p-6 text-lg leading-relaxed font-light 
-              backdrop-blur-md shadow-lg z-20'
+            className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
             style={{ bottom: isMobile ? 140 : 32 }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
             onClick={(e) => e.stopPropagation()}
           >
             <p className='whitespace-pre-line text-cyan-50'>{displayedText}</p>
 
             {/* FINAL SCREEN CTA */}
-            {isFinal && (
-              <motion.div
-                className='mt-6 flex flex-col items-center gap-4'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Image
-                  src='/images/book_cover.png'
-                  alt='Fractured Horizons Book Cover'
-                  width={260}
-                  height={380}
-                  className='rounded-xl shadow-xl'
-                />
-
-                <Button
-                  className='bg-cyan-700/30 hover:bg-cyan-600/60 
-                    text-cyan-200 border border-cyan-500/50 rounded-xl 
-                    px-6 py-3 text-lg'
-                  onClick={() => (window.location.href = '/book')}
+            {screenIndex === screens.length - 1 &&
+              textIndex === screen.text.length - 1 && (
+                <motion.div
+                  className='mt-6 flex flex-col items-center gap-4'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isTyping ? 0 : 1 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  Learn More / Buy the Book
-                </Button>
+                  <Image
+                    src='/images/book_cover.png'
+                    alt='Fractured Horizons Book Cover'
+                    width={260}
+                    height={380}
+                    className='rounded-xl shadow-xl'
+                  />
 
-                <Link href='/'>
                   <Button
-                    className='bg-cyan-700/30 hover:bg-cyan-600/60 
-                      text-cyan-200 border border-cyan-500/50 rounded-xl 
-                      px-6 py-3 text-lg'
+                    className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
+                    onClick={() => (window.location.href = '/book')}
                   >
-                    Home
+                    Learn More / Buy the Book
                   </Button>
-                </Link>
-              </motion.div>
-            )}
+
+                  <Link href='/'>
+                    <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
+                      Home
+                    </Button>
+                  </Link>
+                </motion.div>
+              )}
           </motion.div>
         )}
       </AnimatePresence>
