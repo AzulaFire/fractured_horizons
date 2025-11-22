@@ -190,7 +190,7 @@ export default function ChapterOne() {
         {!hideBox && (
           <motion.div
             className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
-            style={{ bottom: isMobile ? 80 : 32 }}
+            style={{ bottom: isMobile ? 120 : 32 }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
