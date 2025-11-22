@@ -13,6 +13,12 @@ export default function ChapterOne() {
   const [isTyping, setIsTyping] = useState(true);
   const [hideBox, setHideBox] = useState(false);
 
+  // MOBILE DETECTION
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
 
@@ -79,15 +85,26 @@ export default function ChapterOne() {
   const kai = getCharacter('kai');
   const airi = getCharacter('airi');
 
-  // --- ADJUST CHARACTER POSITION FOR TEXTBOX ---
-  const characterBottom = hideBox ? '0' : '12%'; // move up if textbox visible
-  const raisedBottom = `calc(${characterBottom} + 20px)`; // raise 20px for all
+  // --- CHARACTER POSITION FIX (MOBILE HIGHER) ---
+  const characterBottom = hideBox ? '0' : isMobile ? '24%' : '12%';
+
+  const raisedBottom = `calc(${characterBottom} + 20px)`;
 
   return (
     <div
       className='relative w-full h-screen bg-black overflow-hidden text-white'
       onClick={handleAdvance}
     >
+      {/* MOBILE TAP-TO-ADVANCE FIX (Invisible Button) */}
+      <button
+        className='absolute inset-0 z-30 block md:hidden'
+        style={{ background: 'transparent' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleAdvance();
+        }}
+      />
+
       {/* BACKGROUND */}
       <AnimatePresence mode='wait'>
         <motion.div
@@ -100,9 +117,9 @@ export default function ChapterOne() {
         >
           <Image
             src={
-              screen.background && screen.background.startsWith('/')
+              screen.background.startsWith('/')
                 ? screen.background
-                : `/images/${screen.background}.jpg`
+                : `/images/${screen.background}`
             }
             alt='Scene Background'
             width={1920}
@@ -157,11 +174,14 @@ export default function ChapterOne() {
         </motion.div>
       </AnimatePresence>
 
-      {/* --- TEXTBOX (ON TOP) --- */}
+      {/* --- TEXTBOX --- */}
       <AnimatePresence>
         {!hideBox && (
           <motion.div
-            className='absolute bottom-8 left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
+            className='absolute bottom-8 left-1/2 -translate-x-1/2 
+              w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 
+              rounded-2xl p-6 text-lg leading-relaxed font-light 
+              backdrop-blur-md shadow-lg z-20'
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
@@ -188,13 +208,20 @@ export default function ChapterOne() {
                   />
 
                   <Button
-                    className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'
+                    className='bg-cyan-700/30 hover:bg-cyan-600/60 
+                      text-cyan-200 border border-cyan-500/50 rounded-xl 
+                      px-6 py-3 text-lg'
                     onClick={() => (window.location.href = '/book')}
                   >
                     Learn More / Buy the Book
                   </Button>
+
                   <Link href='/'>
-                    <Button className='bg-cyan-700/30 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 rounded-xl px-6 py-3 text-lg'>
+                    <Button
+                      className='bg-cyan-700/30 hover:bg-cyan-600/60 
+                      text-cyan-200 border border-cyan-500/50 rounded-xl 
+                      px-6 py-3 text-lg'
+                    >
                       Home
                     </Button>
                   </Link>
