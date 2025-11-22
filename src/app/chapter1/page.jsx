@@ -102,7 +102,7 @@ export default function ChapterOne() {
             src={
               screen.background && screen.background.startsWith('/')
                 ? screen.background
-                : `/images/${screen.background}`
+                : `/images/${screen.background}.jpg`
             }
             alt='Scene Background'
             width={1920}
