@@ -20,10 +20,10 @@ export default function ChapterOne() {
   }, []);
 
   // Shared mobile offset
-  const MOBILE_OFFSET = isMobile ? 60 : 0;
+  const MOBILE_OFFSET = isMobile ? 40 : 0;
 
   // Character downward correction (mobile only)
-  const CHARACTER_ADJUST = isMobile ? -80 : 0;
+  const CHARACTER_ADJUST = isMobile ? -60 : 0;
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
