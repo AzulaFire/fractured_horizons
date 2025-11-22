@@ -19,6 +19,9 @@ export default function ChapterOne() {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
+  // Shared mobile offset for characters + textbox
+  const MOBILE_OFFSET = isMobile ? 80 : 0;
+
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
 
@@ -86,9 +89,9 @@ export default function ChapterOne() {
   const airi = getCharacter('airi');
 
   // --- CHARACTER POSITION FIX (MOBILE HIGHER) ---
-  const characterBottom = hideBox ? '0' : isMobile ? '24%' : '12%';
+  const characterBottom = hideBox ? 0 : isMobile ? 24 : 12;
 
-  const raisedBottom = `calc(${characterBottom} + 20px)`;
+  const raisedBottom = `calc(${characterBottom}% + ${20 + MOBILE_OFFSET}px)`;
 
   return (
     <div
@@ -178,10 +181,11 @@ export default function ChapterOne() {
       <AnimatePresence>
         {!hideBox && (
           <motion.div
-            className='absolute bottom-8 left-1/2 -translate-x-1/2 
+            className='absolute left-1/2 -translate-x-1/2 
               w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 
               rounded-2xl p-6 text-lg leading-relaxed font-light 
               backdrop-blur-md shadow-lg z-20'
+            style={{ bottom: isMobile ? 80 : 32 }} // MOBILE OFFSET APPLIED
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}

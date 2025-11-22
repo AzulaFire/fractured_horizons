@@ -2,7 +2,7 @@
   "screens": [
     {
       "id": 1,
-      "background": "bg_apartment_day.jpg",
+      "background": "apartment_day.jpg",
       "character": {
         "name": "kai",
         "expressions": ["normal", "smile"]
