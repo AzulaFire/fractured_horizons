@@ -20,8 +20,8 @@ export default function ChapterOne() {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  const MOBILE_OFFSET = isMobile ? 40 : 0; // slightly increased for positioning
-  const CHARACTER_ADJUST = isMobile ? -45 : 0;
+  const MOBILE_OFFSET = isMobile ? 60 : 0; // slightly increased for positioning
+  const CHARACTER_ADJUST = isMobile ? -40 : 0;
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
@@ -190,7 +190,7 @@ export default function ChapterOne() {
         {!hideBox && (
           <motion.div
             className='absolute left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 rounded-2xl p-6 text-lg leading-relaxed font-light backdrop-blur-md shadow-lg z-20'
-            style={{ bottom: isMobile ? 120 : 32 }}
+            style={{ bottom: isMobile ? 160 : 32 }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
