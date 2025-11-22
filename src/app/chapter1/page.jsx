@@ -19,8 +19,11 @@ export default function ChapterOne() {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  // Shared mobile offset for characters + textbox
+  // Shared mobile offset
   const MOBILE_OFFSET = isMobile ? 80 : 0;
+
+  // Character downward correction (mobile only)
+  const CHARACTER_ADJUST = isMobile ? -200 : 0;
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
@@ -88,17 +91,19 @@ export default function ChapterOne() {
   const kai = getCharacter('kai');
   const airi = getCharacter('airi');
 
-  // --- CHARACTER POSITION FIX (MOBILE HIGHER) ---
+  // --- CHARACTER POSITION FIX (mobile adjusted) ---
   const characterBottom = hideBox ? 0 : isMobile ? 24 : 12;
 
-  const raisedBottom = `calc(${characterBottom}% + ${20 + MOBILE_OFFSET}px)`;
+  const raisedBottom = `calc(${characterBottom}% + ${
+    20 + MOBILE_OFFSET + CHARACTER_ADJUST
+  }px)`;
 
   return (
     <div
       className='relative w-full h-screen bg-black overflow-hidden text-white'
       onClick={handleAdvance}
     >
-      {/* MOBILE TAP-TO-ADVANCE FIX (Invisible Button) */}
+      {/* MOBILE TAP-TO-ADVANCE FIX */}
       <button
         className='absolute inset-0 z-30 block md:hidden'
         style={{ background: 'transparent' }}
@@ -139,7 +144,7 @@ export default function ChapterOne() {
                 src={`/characters/kai/${kai.expression}.png`}
                 alt='Kai'
                 className='absolute h-[70%] object-contain z-10 
-                 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
+                  left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0'
                 style={{ bottom: raisedBottom }}
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -161,7 +166,7 @@ export default function ChapterOne() {
                 src={`/characters/airi/${airi.expression}.png`}
                 alt='Airi'
                 className='absolute h-[70%] object-contain z-10 
-                 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
+                  left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
                 style={{ bottom: raisedBottom }}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -185,7 +190,7 @@ export default function ChapterOne() {
               w-[90%] md:w-[70%] bg-black/70 border border-cyan-500/50 
               rounded-2xl p-6 text-lg leading-relaxed font-light 
               backdrop-blur-md shadow-lg z-20'
-            style={{ bottom: isMobile ? 80 : 32 }} // MOBILE OFFSET APPLIED
+            style={{ bottom: isMobile ? 140 : 32 }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
@@ -223,8 +228,8 @@ export default function ChapterOne() {
                   <Link href='/'>
                     <Button
                       className='bg-cyan-700/30 hover:bg-cyan-600/60 
-                      text-cyan-200 border border-cyan-500/50 rounded-xl 
-                      px-6 py-3 text-lg'
+                        text-cyan-200 border border-cyan-500/50 rounded-xl 
+                        px-6 py-3 text-lg'
                     >
                       Home
                     </Button>
