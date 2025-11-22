@@ -23,7 +23,7 @@ export default function ChapterOne() {
   const MOBILE_OFFSET = isMobile ? 80 : 0;
 
   // Character downward correction (mobile only)
-  const CHARACTER_ADJUST = isMobile ? -200 : 0;
+  const CHARACTER_ADJUST = isMobile ? -100 : 0;
 
   const screen = screens[screenIndex];
   const fullText = screen.text[textIndex];
