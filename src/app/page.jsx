@@ -179,7 +179,8 @@ export default function Page() {
                   boxShadow: '0 0 30px rgba(0, 255, 255, 0.6)',
                 }}
                 whileTap={{ scale: 0.95 }}
-                className='px-8 py-4 bg-linear-to-r from-cyan-500 to-blue-600 text-black font-bold rounded-md relative overflow-hidden group'
+                className='px-8 py-4 bg-linear-to-r from-cyan-500 to-blue-600 text-black font-bold rounded-md relative overflow-hidden group flex justify-center items-center
+'
               >
                 <Link href='/chapter1'>
                   <span className='relative z-10'>INITIALIZE</span>
