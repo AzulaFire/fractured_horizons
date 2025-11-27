@@ -93,7 +93,7 @@ export default function ChapterOne() {
   };
 
   const kai = getCharacter('kai');
-  const airi = getCharacter('airi');
+  const mia = getCharacter('mia');
 
   // --- CHARACTER POSITION FIX ---
   const characterBottom = hideBox ? 0 : isMobile ? 24 : 12;
@@ -162,13 +162,13 @@ export default function ChapterOne() {
             )}
           </AnimatePresence>
 
-          {/* --- AIRI --- */}
+          {/* --- MIA --- */}
           <AnimatePresence mode='wait'>
-            {airi && (
+            {mia && (
               <motion.img
-                key={`airi-${airi.expression}`}
-                src={`/characters/airi/${airi.expression}.png`}
-                alt='Airi'
+                key={`mia-${mia.expression}`}
+                src={`/characters/mia/${mia.expression}.png`}
+                alt='Mia'
                 className='absolute h-[70%] object-contain z-10 left-1/2 -translate-x-1/2 md:right-24 md:left-auto md:translate-x-0'
                 style={{ bottom: raisedBottom }}
                 initial={{ opacity: 0, x: 40 }}

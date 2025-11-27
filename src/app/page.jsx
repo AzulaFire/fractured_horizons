@@ -142,7 +142,7 @@ export default function Page() {
           className='text-center mb-12'
         >
           <h2 className='text-xl md:text-3xl font-light text-cyan-300 mb-4 tracking-wider uppercase'>
-            Echoes of Airi
+            Echoes of Mia
           </h2>
           <p className='text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed'>
             In the ruins of tomorrow, every memory is a doorway—and every

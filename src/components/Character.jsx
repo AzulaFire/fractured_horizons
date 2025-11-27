@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 export default function Character({
-  name, // "kai" or "airi"
+  name, // "kai" or "mia"
   emotion, // "smile", "angry", etc
   position = 'center', // left | right | center
   visible = true,

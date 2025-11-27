@@ -20,7 +20,7 @@
         "expressions": ["sad", "sweat"]
       },
       "text": [
-        "Before everything collapsed, Airi used to sit right there—sketching on my datapad, humming songs I pretended not to like.",
+        "Before everything collapsed, Mia used to sit right there—sketching on my datapad, humming songs I pretended not to like.",
         "When the System went dark, I thought I lost her forever. But in the static… something answered."
       ]
     },
@@ -28,7 +28,7 @@
       "id": 3,
       "background": "digital_static.jpg",
       "character": {
-        "name": "airi",
+        "name": "mia",
         "expressions": ["sad", "annoyed"]
       },
       "text": [
@@ -52,12 +52,12 @@
       "id": 5,
       "background": "lab_dark.jpg",
       "character": {
-        "name": "airi",
+        "name": "mia",
         "expressions": ["smug", "scared"]
       },
       "text": [
         "“Dad… if you keep searching, you might not like what you find.”",
-        "Airi wasn’t just a memory. She wasn’t just data. She was something new—something caught between who she was and who she might become."
+        "Mia wasn’t just a memory. She wasn’t just data. She was something new—something caught between who she was and who she might become."
       ]
     },
     {
@@ -68,7 +68,7 @@
       },
       "text": [
         "Fractured Horizons is a story about loss, discovery, and the lengths we go to for the ones we love.",
-        "If you want to know what happens to Kai and Airi… their full journey awaits.",
+        "If you want to know what happens to Kai and Mia… their full journey awaits.",
         "Tap below to read the book."
       ],
       "final": {
